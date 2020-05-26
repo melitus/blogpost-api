@@ -8,4 +8,4 @@ const blogpostsSchema = new Schema ({
     comments: [{type: Schema.ObjectId, ref: 'Comments'}]
 })
 
-module.exports = mongoose.model("Users", blogpostsSchema)
+module.exports = mongoose.model("BlogPosts", blogpostsSchema)
