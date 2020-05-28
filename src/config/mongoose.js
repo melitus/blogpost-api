@@ -11,7 +11,7 @@ const options = {
 }
 
 let MONGO_URI = 'mongodb+srv://root:Ogochukwu@123@blogapi-a6kry.mongodb.net/test?retryWrites=true&w=majority'
-
+// let MONGO_URI = 'mongodb+srv://root:login@root@blogapi-a6kry.mongodb.net/test?retryWrites=true&w=majority'
 exports.connect = async () => {
   try {
     console.log('Mongo db connected')

@@ -7,7 +7,7 @@ let roles = ['guest', 'admin', 'moderator']
 const userSchema = new Schema ({
     email: {type: String},
     password: {type: String},
-    roles:{type:String, enum: roles, default: 'guest' },
+    role:{type:String, enum: roles, default: 'guest' },
     firstName: {type: String},
     lastName: {type: String},
     blogpost: [{type: Schema.ObjectId, ref: 'BlogPosts'}]

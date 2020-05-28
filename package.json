@@ -2,10 +2,13 @@
   "name": "blogpost-api",
   "version": "1.0.0",
   "description": "This is an api for blog post application",
-  "main": "index.js",
+  "main": "src/server/index.js",
   "repository": "https://github.com/melitus/blogpost-api.git",
   "author": "melitus <asmelitus@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "dev": "nodemon node /src/server/index.js"
+  },
   "dependencies": {
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
