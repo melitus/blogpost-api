@@ -39,7 +39,8 @@ const getSingleUser = async (req, res) => {
 const updateUser = async (req, res) => {
     try {
         const {userId} = req.params
-        const {inputdata} = req.body
+        const inputdata = req.body
+        console.log({ userId, inputdata})
         let filter = {_id:userId}
         let selector = {$set: inputdata }
         const updated = await UserModel.updateOne(filter, selector)
@@ -50,9 +51,20 @@ const updateUser = async (req, res) => {
 
 }
 
+const deleteUser = async (req, res) => {
+    try {
+    let {userId} = req.params
+    const deletedUsed = await UserModel.deleteOne({_id: userId})
+    res.status(200).json({message: 'User deleted successfully', data:deletedUsed})
+    } catch (e) {
+     console.trace(e)
+    }
+}
+
 module.exports = {
     register,
     getAllUser,
     getSingleUser,
-    updateUser
+    updateUser,
+    deleteUser
 }
