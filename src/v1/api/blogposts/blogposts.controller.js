@@ -18,6 +18,7 @@ const getAllPost = async(req, res) =>{
     try{
         const searchQuery = {}
         const foundPosts = await BlogpostModel.find(searchQuery)
+        .populate('comments', 'content user')
         res.status(200).json({allPosts: foundPosts})
     }catch(e){
 
