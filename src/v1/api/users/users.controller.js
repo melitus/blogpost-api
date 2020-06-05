@@ -1,4 +1,5 @@
 const UserModel = require('./users.model')
+const UserService = require('./user.service')
 
 const register = async (req, res) => {
     try {
@@ -16,15 +17,7 @@ const register = async (req, res) => {
 
 const getAllUser = async (req, res) => {
     try {
-        const searchQuery = {}
-        const foundUsers = await UserModel.find(searchQuery)
-        .select('-password')
-        .populate({
-            path: 'blogpost', select: '_id title content',
-            populate: { path: 'comments', select: '_id content' }
-          })
-          .exec()
-        // populate({ path: 'blogpost', select: 'title content' });
+        const foundUsers = await UserService.getAllUser()
         res.status(200).json({allUsers: foundUsers})
 
     } catch (e) {
@@ -36,7 +29,7 @@ const getSingleUser = async (req, res) => {
     try {
         const {userId} = req.params
         console.log({userId})
-        const foundUser = await UserModel.findOne({_id: userId})
+        const foundUser = await UserService.getAllUser(userId)
         res.status(200).json({singleUser : foundUser})
     } catch (e) {
 
