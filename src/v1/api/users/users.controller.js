@@ -1,15 +1,11 @@
-const UserModel = require('./users.model')
 const UserService = require('./user.service')
 
 const register = async (req, res) => {
     try {
         const inputdata = req.body
         console.log(inputdata)
-
-        const newUser = new UserModel(inputdata)
-        console.log({newUser})
-        const saveUsed = await newUser.save()
-        res.status(201).json({saveUsed})
+         const savedUser = await UserService.register(inputdata)
+        res.status(201).json({savedUser})
     } catch (e) {
     console.trace(e)
     }
@@ -29,7 +25,7 @@ const getSingleUser = async (req, res) => {
     try {
         const {userId} = req.params
         console.log({userId})
-        const foundUser = await UserService.getAllUser(userId)
+        const foundUser = await UserService.getSingleUser(userId)
         res.status(200).json({singleUser : foundUser})
     } catch (e) {
 
@@ -40,10 +36,7 @@ const updateUser = async (req, res) => {
     try {
         const {userId} = req.params
         const inputdata = req.body
-        console.log({ userId, inputdata})
-        let filter = {_id:userId}
-        let selector = {$set: inputdata }
-        const updated = await UserModel.updateOne(filter, selector)
+        const updated = await UserService.updateUser(userId, inputdata)
         res.status(200).json({data: updated})
     } catch (e) {
 
@@ -54,7 +47,7 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
     try {
     let {userId} = req.params
-    const deletedUsed = await UserModel.deleteOne({_id: userId})
+    const deletedUsed = await UserService.deleteUser(userId)
     res.status(200).json({message: 'User deleted successfully', data:deletedUsed})
     } catch (e) {
      console.trace(e)
