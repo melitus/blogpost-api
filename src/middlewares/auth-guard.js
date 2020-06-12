@@ -29,7 +29,6 @@ const generateAuthToken = async function(user) {
     return token
 }
 
-
 const getTokenFromHeader = req => {
     if (
       (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Token') ||
@@ -40,8 +39,7 @@ const getTokenFromHeader = req => {
     return null;
   };
 
-
-  Steps:
+ // Steps:
   // 1: Read the token from header
   // 2: Verify the token with JWT
   // 3: Once verified, attach user object into the request
