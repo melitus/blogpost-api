@@ -1,4 +1,5 @@
 const UserModel = require('./users.model')
+const {generateAuthToken, passwordMatches, generatePasswordHash} = require('../../../middlewares/auth-guard')
 
 const getSingleUser = async (userId) => {
     const foundUser = await UserModel.findOne({_id: userId})
@@ -18,13 +19,28 @@ const getAllUser = async () => {
       return foundUsers
 }
 
-const register = async (inputdata) => {
+const login = async (req) => {
+      const { email, password } = req.body;
+      const user = await User.findOne({ email });
+      if (!user) return next(new Error('Email does not exist'));
+      await passwordMatches(password, user.password);
+      const accessToken = await generateAuthToken(user)
+      await User.findByIdAndUpdate(user._id, { accessToken })
+      let response = {
+        data: { email: user.email, role: user.role },
+        accessToken
+      }
+     return response
+  }
 
-    const newUser = new UserModel(inputdata)
+const register = async (inputdata) => {
+    const { role, email, password } = inputdata
+    const hashedPassword = await generatePasswordHash(password);
+    let newInputData = { email, password: hashedPassword, role: role }
+    const newUser = new UserModel(newInputData)
     const saveUsed = await newUser.save()
      return saveUsed
 }
-
 
 const updateUser = async (userId, inputdata) => {
         let filter = {_id:userId}
@@ -44,5 +60,6 @@ module.exports={
     getAllUser,
     register,
     updateUser,
-    deleteUser
+    deleteUser,
+    login
 }

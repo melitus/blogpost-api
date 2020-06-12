@@ -1,5 +1,22 @@
 const jwt = require("jsonwebtoken");
+const  bcrypt = require('bcrypt');
+
 const config = require('../config/config')
+
+// less cpu usage
+const generatePasswordHash = async (password) =>{
+  const saltRounds = 10
+  const hashedPassword = await bcrypt.hash(password, saltRounds)
+  return hashedPassword
+}
+
+const passwordMatches = async (plainPassword, hashedPassword) => {
+  let isPasswordEqual = await bcrypt.compare(plainPassword, hashedPassword)
+  if (!isPasswordEqual)
+   throw new Error('Incorrect password')
+
+return isPasswordEqual
+}
 
 const generateAuthToken = async function(user) {
     // Generate an auth token for the user
@@ -23,17 +40,6 @@ const getTokenFromHeader = req => {
     return null;
   };
 
-  function readToken(req, res, next) {
-    if (req.hasOwnProperty('headers') && req.headers.hasOwnProperty('authorization')
-        && req.headers.authorization.split(' ')[0] === 'Bearer' ||
-        req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Token') {
-        req.jwt = req.headers.authorization.split(' ')[1];
-        next();
-    } else {
-        return next();
-    }
-}
-
 
   Steps:
   // 1: Read the token from header
@@ -41,8 +47,7 @@ const getTokenFromHeader = req => {
   // 3: Once verified, attach user object into the request
   // 4: Then continue with next()
 
-  checkAuth or
-const authenticateJWT = (req, res, next) => {
+const allowIfLoggedin = (req, res, next) => {
   if (!config.requiresAuth) return next();
 
   const token = getTokenFromHeader(req);
@@ -59,24 +64,7 @@ const authenticateJWT = (req, res, next) => {
   }
 };
 
-app.use(authenticateJWT)
-
-isAuthenticated
-  exports.allowIfLoggedin = async (req, res, next) => {
-    try {
-      const user = res.user
-      if (!user)
-        return res.status(401).json({
-          error: "Permission denied, you must be authenticated"
-        });
-      req.user = user;
-      next();
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  const checkRole = (requiredRole) => {
+const checkRole = (requiredRole) => {
     return (req, res, next) => {
       if(req.user.role === requiredRole) {
         return next();
@@ -87,28 +75,10 @@ isAuthenticated
   }
 
 
-function checkPermissions(...allowed) {
-  const isAllowed = permission => allowed.indexOf(permission) > -1
-  return (req, res, next) => {
-    const { permissions } = req.user.roles
-    if (permissions.includes(allowed) && isAllowed(permissions))
-    next()
-    else{
-      res.status(httpStatus.FORBIDDEN).json({message: 'Forbidden'})
-    }
+  module.exports = {
+    generatePasswordHash,
+    passwordMatches,
+    generateAuthToken,
+    allowIfLoggedin,
+    checkRole
   }
-
-}
-
-function checkPermit(...allowed) {
-  const isAllowed = permission => allowed.indexOf(permission) > -1;
-  // return a middleware
-  return (request, response, next) => {
-    const { permissions } = request.user.role
-    if (request.user && isAllowed(permissions))
-      next(); // permission is allowed, so continue on the next middleware
-    else {
-      response.status(403).json({message: "Forbidden"}); // user is forbidden
-    }
-  }
-}

@@ -5,11 +5,27 @@ const register = async (req, res) => {
         const inputdata = req.body
         console.log(inputdata)
          const savedUser = await UserService.register(inputdata)
-        res.status(201).json({savedUser})
+        res.status(201).res.json({
+            data: savedUser,
+            message: "You have signed up successfully"
+          })
     } catch (e) {
+    next(error)
     console.trace(e)
     }
 }
+
+const login = async (req, res, next) => {
+    try {
+      const response = await UserService.login(req)
+      res.status(200).json({
+        data: { email: user.email, role: user.role },
+        accessToken
+      })
+    } catch (error) {
+      next(error);
+    }
+  }
 
 const getAllUser = async (req, res) => {
     try {
@@ -56,6 +72,7 @@ const deleteUser = async (req, res) => {
 
 module.exports = {
     register,
+    login,
     getAllUser,
     getSingleUser,
     updateUser,
