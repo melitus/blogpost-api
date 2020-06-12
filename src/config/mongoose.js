@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 
-
 // make bluebird default Promise
 mongoose.Promise = require('bluebird')
 
