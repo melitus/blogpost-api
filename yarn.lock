@@ -2692,9 +2692,9 @@ supports-color@^7.1.0:
     has-flag "^4.0.0"
 
 systeminformation@^4.23.3:
-  version "4.26.4"
-  resolved "https://registry.yarnpkg.com/systeminformation/-/systeminformation-4.26.4.tgz#ec855d64f3e28622788a96c7dcabb6b051def50a"
-  integrity sha512-4+AYe0SfjdQPHEFL0nAyFMWyBUe8c5DZdSHApeJrdAvem5yoE/eS7/dGChnKLAkr+AKAoKcnqucPv302jy2+aA==
+  version "4.34.19"
+  resolved "https://registry.yarnpkg.com/systeminformation/-/systeminformation-4.34.19.tgz#c5f066cc043482686d95bbc554d52e6ec9e42367"
+  integrity sha512-ssUYQ0s1FFeb8EGtyCX/41cC/XaF84gbNAUfaUTziibx+xCAaR0zrOy0yZlnUrsWDQ+snp/Utl8cx8IdtrevrA==
 
 tar@^4.4.2:
   version "4.4.13"
